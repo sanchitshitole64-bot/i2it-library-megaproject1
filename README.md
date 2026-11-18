@@ -144,3 +144,5 @@ The server will show:
 | Real-Time Sync | ntfy.sh (SSE + HTTP) |
 | Hosting | GitHub Pages (static) |
 | Audio | Web Audio API |
+
+<!-- GitHub Pages Build Trigger: 11/18/2026 20:25:44 -->
