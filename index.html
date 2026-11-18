@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>International Institute of Information Technology, Hinjewadi | Central Library Portal & Queue Solver</title>
+  
+  <!-- SEO & Mobile Theme -->
+  <meta name="description" content="I²IT Hinjewadi Smart Library Portal — Live occupancy telemetry, book finder &amp; virtual queue system.">
+  <meta name="theme-color" content="#0a0e17">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="styles.css">
+  
+  <!-- Favicon icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏛️</text></svg>">
+</head>
+<body>
+
+  <div id="app-container">
+    
+    <!-- ====================================================================
+         Top App Header: Institute Branding & Telemetry
+         ==================================================================== -->
+    <header class="app-header">
+      <div class="brand-section">
+        <div class="brand-logo-badge" title="International Institute of Information Technology, Hinjewadi">
+          I²IT
+        </div>
+        <div class="brand-title-wrap">
+          <h1>
+            <span class="brand-title-full">International Institute of Information Technology, Hinjewadi</span>
+            <span class="brand-title-short">I²IT Central Library</span>
+          </h1>
+          <div class="brand-subtitle">
+            <span class="pulse-dot"></span>
+            <span>Central Digital Library • Interactive Campus Video Tour & Intelligent Queue Telemetry</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live IoT Telemetry Counters in Header -->
+      <div class="header-telemetry">
+        <div class="telem-pill status-cyan" title="Live Occupancy inside library • Cross-Device Live Sync Active">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span class="telem-label">Inside:</span>
+          <span class="count" id="header-live-count">0 / 80</span>
+          <span class="live-dot pulse" id="cloud-sync-pulse" title="Live Cloud Sync Active across all phones and desktops" style="width: 7px; height: 7px; border-radius: 50%; background: #00ffff; box-shadow: 0 0 8px #00ffff; margin-left: 2px;"></span>
+        </div>
+
+        <div class="telem-pill telem-clock" style="color: var(--text-secondary);" title="Current Time">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="6" x2="12" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/></svg>
+          <span id="header-digital-clock" style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600;">--:--:--</span>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="header-actions">
+        <!-- Portal Navigation: Student Portal & Admin Portal -->
+        <div class="portal-nav-group">
+          <button class="portal-btn student-active" id="btn-portal-student" title="Student Portal (Normal Access Mode)">
+            <span>🎓</span>
+            <span class="portal-text">Student Portal</span>
+          </button>
+
+          <button class="portal-btn admin-btn" id="btn-portal-admin" title="Admin Portal (Password Protected)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span id="portal-admin-label" class="portal-text">Admin Portal</span>
+          </button>
+        </div>
+
+        <button class="btn-icon active" id="sound-toggle-btn" title="Toggle Synthesizer Sound Effects">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+        </button>
+
+        <button class="btn-icon" id="btn-open-settings" title="Admin Settings & Midnight Scheduler" style="display: none;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         Main Workspace: 3D Viewport + Floating Glass Dashboard
+         ==================================================================== -->
+    <main class="main-workspace">
+      
+      <!-- Interactive HD Video Tour Container -->
+      <div id="video-workspace-container" class="video-workspace-container">
+        <video id="library-video" class="library-video" autoplay loop muted playsinline preload="auto">
+          <source src="picsart-video.mp4" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+
+        <!-- Ambient Vignette Layer -->
+        <div class="video-ambient-overlay"></div>
+
+        <!-- Video Header Pill Badge -->
+        <div class="video-top-overlay">
+          <div class="video-live-badge">
+            <span class="live-dot pulse"></span>
+            <span class="live-text">I²IT LIBRARY TOUR • HD STREAM</span>
+          </div>
+          <button class="video-pill-btn" id="video-fit-toggle" title="Toggle Video Aspect Fit (Cover / Fit)">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
+            <span id="fit-toggle-text">Fit Screen</span>
+          </button>
+        </div>
+
+        <!-- Floating Glass Video Controls Bar -->
+        <div class="video-controls-bar glass-panel">
+          <button class="vid-ctrl-btn" id="btn-video-play-pause" title="Play / Pause Video">
+            <svg id="icon-pause" width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" rx="1"/><rect x="14" y="4" width="4" height="16" rx="1"/></svg>
+            <svg id="icon-play" width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span id="btn-play-pause-text">Pause</span>
+          </button>
+
+          <button class="vid-ctrl-btn" id="btn-toggle-dashboard-video" title="Toggle Library Dashboard">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+            <span id="btn-dashboard-toggle-text">Toggle Dashboard</span>
+          </button>
+
+          <button class="vid-ctrl-btn" id="btn-video-fullscreen" title="Toggle Fullscreen">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>
+            <span>Fullscreen</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- ==================================================================
+           Side Dashboard Panel (Tabs: Queue, Book Finder, Seats, Gate Admin)
+           ================================================================== -->
+      <aside class="sidebar-panel glass-panel">
+        
+        <!-- Mobile Drawer Header -->
+        <div class="sidebar-mobile-bar">
+          <div class="drawer-drag-pill" aria-hidden="true"></div>
+          <div class="sidebar-mobile-header-row">
+            <div class="sidebar-mobile-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+              <span>Library Dashboard</span>
+            </div>
+            <button class="btn-close-mobile-drawer" id="btn-close-sidebar-mobile" title="Close and view library video" type="button">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              <span>Close Video Tour</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Tab Navigation Bar -->
+        <div class="sidebar-tabs">
+          <button class="tab-btn active" data-tab="tab-queue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            Queue & Crowd
+          </button>
+          <button class="tab-btn" data-tab="tab-finder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Book Finder & Shelves
+          </button>
+          <button class="tab-btn" data-tab="tab-admin" id="sidebar-tab-admin" title="Admin Portal (Password Protected)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span id="sidebar-admin-tab-label">Admin & Settings</span>
+          </button>
+        </div>
+
+        <!-- Sidebar Content Panes -->
+        <div class="sidebar-content">
+          
+          <!-- TAB 1: LIVE QUEUE & OCCUPANCY DASHBOARD -->
+          <div class="tab-pane active" id="tab-queue">
+            
+            <!-- Real-Time Crowd Meter Card -->
+            <div class="meter-card">
+              <div class="meter-header">
+                <span class="meter-title">Live Occupancy Telemetry</span>
+                <span class="meter-badge badge-optimal" id="dashboard-meter-badge">Optimal Capacity</span>
+              </div>
+              <div class="meter-stats">
+                <span class="meter-number" id="dashboard-meter-number">0</span>
+                <span class="meter-capacity">/ 80 Total Capacity</span>
+              </div>
+              <div class="meter-progress-track">
+                <div class="meter-progress-fill" id="dashboard-meter-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- Queue Wait-Time Grid -->
+            <div class="queue-telemetry-grid">
+              <div class="q-box">
+                <span class="q-box-label">Estimated Wait</span>
+                <span class="q-box-val" id="telemetry-queue-wait">2 min</span>
+                <span class="q-box-sub" id="telemetry-queue-sub">Fast throughput</span>
+              </div>
+              <div class="q-box">
+                <span class="q-box-label">Physical Line</span>
+                <span class="q-box-val" id="telemetry-queue-length">4 Students</span>
+                <span class="q-box-sub" id="telemetry-line-sub">At RFID turnstiles</span>
+              </div>
+            </div>
+
+
+            <!-- Student Seat Occupancy Grid Dashboard (Matching 80-Seat Layout) -->
+            <div class="seat-occupancy-dashboard-card">
+              <div class="section-heading" style="margin-top: 0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+                  Student Seat Occupancy
+                </span>
+                <span class="meter-badge badge-optimal" id="seats-occupied-badge">0 / 80 Occupied</span>
+              </div>
+
+              <!-- Seat Status Legend -->
+              <div class="seat-legend-row">
+                <div class="legend-item">
+                  <span class="legend-box occupied-box"></span>
+                  <span>Occupied (<b id="seat-occupied-count-label" style="color: #60a5fa;">0</b>)</span>
+                </div>
+                <div class="legend-item">
+                  <span class="legend-box available-box"></span>
+                  <span>Vacant (<b id="seat-available-count-label" style="color: var(--text-muted);">80</b>)</span>
+                </div>
+              </div>
+
+              <!-- 80-Seat Interactive Grid (8 rows x 10 cols) -->
+              <div class="seat-grid-container" id="student-seat-grid"></div>
+            </div>
+
+            <!-- Hourly Traffic Curve Chart -->
+            <div style="margin-top: 14px;">
+              <div class="section-heading">
+                <span>Today's Congestion Curve</span>
+                <span style="font-size: 0.7rem; color: var(--accent-cyan); font-weight: normal;">Live Updates</span>
+              </div>
+              <div class="hourly-traffic-chart" id="hourly-traffic-chart"></div>
+            </div>
+
+          </div>
+
+          <!-- TAB 2: BOOK FINDER WITH EXACT SHELF LOCATION -->
+          <div class="tab-pane" id="tab-finder">
+            
+            <!-- Instant Search Input -->
+            <div class="search-box-wrap">
+              <svg class="search-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input type="text" id="book-search-input" class="search-input" placeholder="Search book, author, ISBN (e.g. Cormen, AI, SQL)...">
+              <button class="search-clear-btn" id="btn-clear-search">✕</button>
+            </div>
+
+            <!-- Department Filter Pills -->
+            <div class="dept-filters" id="catalog-dept-filters">
+              <button class="filter-chip active" data-dept="ALL">All Branches</button>
+              <button class="filter-chip" data-dept="Computer">Computer Engg</button>
+              <button class="filter-chip" data-dept="Information">Information Tech</button>
+              <button class="filter-chip" data-dept="AI">AI & Data Science</button>
+              <button class="filter-chip" data-dept="Telecommunication">E&TC Engg</button>
+              <button class="filter-chip" data-dept="Mathematics">Applied Sciences</button>
+            </div>
+
+            <!-- Books List -->
+            <div class="section-heading">
+              <span>Library Catalog & Shelf Locations</span>
+            </div>
+            <div class="book-cards-list" id="catalog-books-list"></div>
+
+          </div>
+
+          <!-- TAB 3: RFID TURNSTILE SIMULATOR & GATE ADMIN -->
+          <div class="tab-pane" id="tab-admin">
+            
+            <!-- PROMINENT MANUAL STUDENT HEADCOUNT CONTROLLER (+1 / -1) -->
+            <div class="sim-controls-card" style="border-color: rgba(59, 130, 246, 0.5); background: linear-gradient(135deg, rgba(30, 58, 138, 0.25), rgba(15, 23, 42, 0.85));">
+              <div class="section-heading" style="margin-top: 0; display: flex; justify-content: space-between; align-items: center;">
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                  Manual Headcount Controller
+                </span>
+                <button class="btn-lock-admin" id="btn-logout-admin-tab" title="Lock Admin Portal & Return to Student View">
+                  🔒 Exit Admin
+                </button>
+              </div>
+
+              <!-- Hero Number Display -->
+              <div class="manual-counter-display">
+                <span class="manual-counter-sub">LIVE STUDENTS INSIDE:</span>
+                <div class="manual-counter-val-wrap">
+                  <span class="manual-counter-val" id="admin-manual-count-val">0</span>
+                  <span class="manual-counter-cap">/ 80 Capacity</span>
+                </div>
+              </div>
+
+              <!-- Two Button Option: Enter and Exit Students -->
+              <div class="manual-btn-row">
+                <button class="manual-btn plus-btn" id="btn-manual-plus-one" title="Student Enter (+1)">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+                  <div class="manual-btn-text">
+                    <span class="manual-btn-title">ENTER</span>
+                    <span class="manual-btn-desc">+1 Student</span>
+                  </div>
+                </button>
+                <button class="manual-btn minus-btn" id="btn-manual-minus-one" title="Student Exit (-1)">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                  <div class="manual-btn-text">
+                    <span class="manual-btn-title">EXIT</span>
+                    <span class="manual-btn-desc">-1 Student</span>
+                  </div>
+                </button>
+              </div>
+
+              <!-- Quick Multi-Increments and Direct Number Input -->
+              <div class="manual-quick-grid">
+                <button class="quick-chip" id="btn-quick-plus-5">+5 Rush</button>
+                <button class="quick-chip" id="btn-quick-minus-5">-5 Exit</button>
+                <button class="quick-chip reset-chip" id="btn-quick-reset-zero">Reset to 0</button>
+                <div class="exact-input-box">
+                  <input type="number" id="input-exact-count" min="0" max="80" value="0" placeholder="Num" inputmode="numeric" autocomplete="off">
+                  <button class="btn-apply-exact" id="btn-apply-exact-count">Set</button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Midnight 12:00 AM Automated Reset Configuration Card -->
+            <div class="sim-controls-card" style="border-color: rgba(6, 182, 212, 0.45); background: linear-gradient(135deg, rgba(6, 182, 212, 0.08), rgba(15, 23, 42, 0.8));">
+              <div class="section-heading" style="margin-top: 0;">
+                <span style="display: flex; align-items: center; gap: 6px;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Midnight (12:00 AM) Auto-Reset
+                </span>
+                <span class="meter-badge badge-optimal" id="midnight-badge-status">Active</span>
+              </div>
+
+              <p style="font-size: 0.74rem; color: var(--text-secondary); line-height: 1.4;">
+                When the clock strikes 12:00 AM midnight (00:00), the library automatically resets all entry headcounts to 0, flushes turnstile lines, and clears queues for the new academic day.
+              </p>
+
+              <div class="setting-toggle-row">
+                <div class="setting-toggle-label">
+                  <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">12:00 AM Auto-Reset</span>
+                  <span style="font-size: 0.7rem; color: var(--text-muted);">Restarts entries from 0 at midnight</span>
+                </div>
+                <label class="switch-toggle">
+                  <input type="checkbox" id="setting-auto-midnight-reset" checked>
+                  <span class="slider-toggle"></span>
+                </label>
+              </div>
+
+              <div class="midnight-countdown-box">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                  <span style="font-size: 0.72rem; color: var(--text-secondary);">Next 12:00 AM Reset In:</span>
+                  <span class="countdown-digits" id="midnight-countdown-timer">--h --m --s</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-top: 5px;">
+                  <span>Schedule: 12:00:00 AM (00:00)</span>
+                  <span>Last Reset: <b id="last-reset-time-display" style="color: var(--accent-cyan);">None</b></span>
+                </div>
+              </div>
+
+              <button class="btn-primary" id="btn-trigger-midnight-sim" type="button" style="width: 100%; justify-content: center; padding: 10px; font-size: 0.8rem; background: linear-gradient(135deg, #0284c7, #2563eb);">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2.5 2v6h6M21.5 22v-6h-6"/><path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.3"/></svg>
+                Simulate 12:00 AM Midnight Strike (Test Reset)
+              </button>
+            </div>
+
+            <div class="sim-controls-card">
+              <div class="section-heading" style="margin-top: 0;">
+                <span>RFID Turnstile Access Simulator</span>
+              </div>
+              <p style="font-size: 0.74rem; color: var(--text-secondary); line-height: 1.4;">
+                Simulate student badge scans at the entrance gates to test queue resolution logic, capacity limits, and real-time crowd occupancy updates.
+              </p>
+
+              <div class="gate-status-monitor">
+                <span>Gate Hardware Status:</span>
+                <div class="gate-indicator">
+                  <div class="gate-light" id="gate-status-light"></div>
+                  <span id="gate-status-text">GATES IDLE (READY)</span>
+                </div>
+              </div>
+
+              <div class="sim-btn-grid">
+                <button class="sim-btn enter-btn" id="sim-gate-enter">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  +1 Tap In (Scan)
+                </button>
+                <button class="sim-btn exit-btn" id="sim-gate-exit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  -1 Exit (Checkout)
+                </button>
+                <button class="sim-btn" id="sim-gate-rush">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                  Simulate Rush Hour
+                </button>
+                <button class="sim-btn" id="sim-gate-reset">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2.5 2v6h6M21.5 22v-6h-6"/><path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.3"/></svg>
+                  Reset Base Load
+                </button>
+              </div>
+            </div>
+
+            <!-- About Institute Library Information -->
+            <div class="meter-card" style="font-size: 0.74rem; color: var(--text-secondary); line-height: 1.5;">
+              <h4 style="color: #fff; margin-bottom: 6px; font-size: 0.82rem;">About I²IT Hinjewadi Library</h4>
+              <p>
+                International Institute of Information Technology, Hinjewadi (Pune) features a state-of-the-art knowledge resource center housing over 30,000+ technical volumes, digital journals, IEEE Xplore access, and automated RFID smartcard circulation for students in Computer Engineering, Information Technology, and E&TC.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- Mobile Semi-Transparent Drawer Backdrop -->
+      <div class="sidebar-backdrop" id="sidebar-backdrop" title="Tap to close dashboard"></div>
+
+      <!-- ==================================================================
+           Shelf Wayfinding Floating Card
+           ================================================================== -->
+      <div class="wayfinding-popup-card glass-panel" id="wayfinding-popup-card">
+        <div class="wf-header">
+          <div class="wf-beacon-badge">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 1 0 10 10"/></svg>
+            Shelf Wayfinding Active
+          </div>
+          <button class="wf-close-btn" id="btn-close-wayfinding">✕</button>
+        </div>
+
+        <div class="wf-content-grid">
+          <div>
+            <h3 id="wf-book-title" style="font-size: 0.95rem; font-weight: 700; color: #fff;">Book Title</h3>
+            <div class="wf-step-coordinates" style="margin-top: 6px;">
+              <span class="wf-coord-tag">Rack: <b id="wf-book-rack">Rack A-1</b></span>
+              <span class="wf-coord-tag">Shelf: <b id="wf-book-shelf">Tier 2</b></span>
+              <span class="wf-coord-tag">Call: <b id="wf-book-call">005.13 COR</b></span>
+            </div>
+          </div>
+          <div class="shelf-hero-showcase">
+            <span class="shelf-hero-sub">EXACT LOCATION</span>
+            <span class="shelf-hero-val" id="wf-shelf-number-hero">SHELF #2</span>
+            <span class="shelf-hero-tier" id="wf-shelf-tier-hero">Row 2 • Eye-Level</span>
+          </div>
+          <div class="wf-actions">
+            <button class="btn-primary" id="btn-reserve-book-instant" style="padding: 7px 14px; font-size: 0.78rem;">
+              Confirm Shelf Hold
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mobile Floating Action Button (FAB) to view Queue & Book Finder -->
+      <button class="mobile-dashboard-fab" id="mobile-dashboard-fab" title="View Queue & Book Finder">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+        <span>Queue & Book Finder</span>
+        <span class="fab-badge" id="mobile-fab-count">0</span>
+      </button>
+
+    </main>
+
+
+    <!-- ====================================================================
+         Library Settings & Midnight Configuration Modal
+         ==================================================================== -->
+    <div class="modal-backdrop" id="library-settings-modal">
+      <div class="modal-dialog">
+        <button class="modal-close-icon" id="close-settings-modal">✕</button>
+
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+          <div class="brand-logo-badge" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, #0284c7, #06b6d4);">⚙️</div>
+          <div>
+            <h2 style="font-size: 1.15rem; color: #fff;">Library System Settings</h2>
+            <p style="font-size: 0.74rem; color: var(--text-secondary);">International Institute of Information Technology, Hinjewadi</p>
+          </div>
+        </div>
+
+        <div class="setting-toggle-row">
+          <div class="setting-toggle-label">
+            <span style="font-size: 0.82rem; font-weight: 700; color: #fff;">12:00 AM Midnight Auto-Reset</span>
+            <span style="font-size: 0.7rem; color: var(--text-muted);">Automatically clears entries to 0 at 00:00:00 AM</span>
+          </div>
+          <label class="switch-toggle">
+            <input type="checkbox" id="modal-setting-auto-midnight-reset" checked>
+            <span class="slider-toggle"></span>
+          </label>
+        </div>
+
+        <div class="token-meta-list">
+          <div class="token-meta-row">
+            <span>Scheduled Reset Time:</span>
+            <span style="color: var(--accent-cyan);">12:00:00 AM (00:00 hrs)</span>
+          </div>
+          <div class="token-meta-row">
+            <span>Occupancy Reset Target:</span>
+            <span style="color: var(--accent-emerald);">0 / 80 (Fresh Baseline)</span>
+          </div>
+          <div class="token-meta-row">
+            <span>Turnstile Physical Queue:</span>
+            <span>Flush & Clear to 0</span>
+          </div>
+          <div class="token-meta-row">
+            <span>Express Tokens:</span>
+            <span>Reset Daily Token Sequence</span>
+          </div>
+        </div>
+
+        <button class="btn-primary" id="btn-trigger-midnight-modal-sim" type="button" style="width: 100%; justify-content: center; padding: 10px; font-size: 0.82rem; background: linear-gradient(135deg, #0284c7, #2563eb);">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2.5 2v6h6M21.5 22v-6h-6"/><path d="M22 11.5A10 10 0 0 0 3.2 7.2M2 12.5a10 10 0 0 0 18.8 4.3"/></svg>
+          Test & Simulate 12:00 AM Midnight Strike Now
+        </button>
+      </div>
+    </div>
+
+    <!-- ====================================================================
+         Admin Portal Password Verification Modal
+         ==================================================================== -->
+    <div class="modal-backdrop" id="admin-auth-modal">
+      <div class="modal-dialog" style="max-width: 420px;">
+        <button class="modal-close-icon" id="close-auth-modal">✕</button>
+        <div style="text-align: center;">
+          <div class="brand-logo-badge" style="width: 52px; height: 52px; margin: 0 auto 12px; font-size: 1.4rem; background: linear-gradient(135deg, #1e3a8a, #2563eb); box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);">
+            🛡️
+          </div>
+          <h2 style="font-size: 1.25rem; color: #fff; margin-bottom: 4px;">Admin Portal Login</h2>
+          <p style="font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45;">
+            Enter the Administrator Password to manually update student entries & exits, adjust headcounts, and configure 12:00 AM midnight reset.
+          </p>
+        </div>
+
+        <form id="admin-pin-form" style="display: flex; flex-direction: column; gap: 12px; margin-top: 14px;">
+          <div style="position: relative;">
+            <input type="password" id="admin-pin-input" class="search-input" placeholder="Enter Password" autocomplete="current-password" style="padding: 0 40px 0 14px; text-align: center; font-size: 0.95rem; font-family: var(--font-mono); letter-spacing: 1px;">
+            <button type="button" id="btn-toggle-pin-visibility" title="Show/Hide Password" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1rem; padding: 4px;">
+              👁️
+            </button>
+          </div>
+          <div id="admin-pin-error" style="color: var(--accent-rose); font-size: 0.76rem; text-align: center; display: none; font-weight: 600;">
+            Incorrect Password. Please try again.
+          </div>
+          <button class="btn-primary" id="btn-submit-admin-pin" type="submit" style="width: 100%; justify-content: center; padding: 11px; font-size: 0.85rem; font-weight: 700;">
+            Verify & Enter Admin Portal
+          </button>
+        </form>
+
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-color); border-radius: 8px; padding: 10px; margin-top: 8px; font-size: 0.74rem; color: var(--text-muted); text-align: center; line-height: 1.4;">
+          🔒 Access restricted to authorized library administrators and staff only.
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container"></div>
+
+  </div>
+
+  <!-- Script Dependencies -->
+  <script src="libs/confetti.min.js"></script>
+
+  <!-- Application Logic -->
+  <script src="data/catalog.js"></script>
+  <script src="app.js"></script>
+
+</body>
+</html>

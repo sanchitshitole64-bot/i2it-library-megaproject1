@@ -1,0 +1,13 @@
+# Local server script (not needed on GitHub Pages)
+# server.ps1 is kept for local dev but excluded from deployment concern
+
+# Duplicate compressed video (keep only picsart-video.mp4)
+picsart-video-2026-11-18T11-24-31-014Z-compressed.mp4
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+
+
